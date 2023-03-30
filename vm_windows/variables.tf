@@ -40,9 +40,9 @@ variable "vm_instance_size" {
 variable "vm_os" {
   type = map(any)
   default = {
-    "publisher" = "Canonical"
-    "offer"     = "0001-com-ubuntu-server-jammy"
-    "sku"       = "22_04-lts-gen2"
+    "publisher" = "Microsoft"
+    "offer"     = "Windows"
+    "sku"       = "2023"
     "version"   = "latest"
   }
 }
