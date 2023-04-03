@@ -1,3 +1,13 @@
+resource "random_password" "admin-windows" {
+  length           = 16
+  special          = true
+  min_lower        = 2
+  min_upper        = 2
+  min_numeric      = 2
+  min_special      = 2
+  override_special = "*!@#?"
+}
+
 # Create NIC
 resource "azurerm_network_interface" "nic" {
   name                = "${var.nic_name}-${var.vm_name}"
@@ -14,22 +24,23 @@ resource "azurerm_network_interface" "nic" {
 
 # Create VM
 resource "azurerm_windows_virtual_machine" "vm" {
-  name                            = var.vm_name
-  size                            = var.vm_instance_size
-  resource_group_name             = var.rg_name
-  location                        = var.rg_location
-  allow_extension_operations      = false
-  computer_name                   = var.vm_name
-  admin_username                  = var.vm_admin_user
-  admin_password                  = var.vm_admin_password
-  disable_password_authentication = true
-  admin_ssh_key {
-    username   = var.vm_admin_user
-    public_key = file("./ssh_keys/terraform.pub")
-  }
+  name                       = var.vm_name
+  size                       = var.vm_instance_size
+  resource_group_name        = var.rg_name
+  location                   = var.rg_location
+  secure_boot_enabled        = false
+  encryption_at_host_enabled = false
+  allow_extension_operations = true
+  computer_name              = var.vm_name
+  admin_username             = var.vm_admin_user
+  admin_password             = random_password.admin-windows.result
+  patch_assessment_mode      = "AutomaticByPlatform"
+
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]
+
+  boot_diagnostics {}
 
   source_image_reference {
     publisher = var.vm_os["publisher"]

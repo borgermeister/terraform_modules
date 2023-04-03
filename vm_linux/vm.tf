@@ -1,3 +1,14 @@
+# Generate admin password
+resource "random_password" "admin-linux" {
+  length           = 16
+  special          = true
+  min_lower        = 2
+  min_upper        = 2
+  min_numeric      = 2
+  min_special      = 2
+  override_special = "*!@#?"
+}
+
 # Create NIC
 resource "azurerm_network_interface" "nic" {
   name                = "${var.nic_name}-${var.vm_name}"
@@ -21,7 +32,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   allow_extension_operations      = false
   computer_name                   = var.vm_name
   admin_username                  = var.vm_admin_user
-  admin_password                  = var.vm_admin_password
+  admin_password                  = random_password.admin-linux.result
   disable_password_authentication = true
   admin_ssh_key {
     username   = var.vm_admin_user
@@ -30,6 +41,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]
+
+  boot_diagnostics {}
 
   source_image_reference {
     publisher = var.vm_os["publisher"]

@@ -5,17 +5,17 @@ variable "tags" {
 }
 
 variable "rg_name" {
-  type = string
+  type        = string
   description = "Resource Group name"
 }
 
 variable "rg_location" {
-  type = string
+  type        = string
   description = "Resource Group location"
 }
 
 variable "vm_name" {
-  type = string
+  type        = string
   description = "Virtual Machine name"
 }
 
@@ -48,29 +48,29 @@ variable "vm_os" {
 }
 
 variable "nic_name" {
-  type = string
+  type        = string
   description = "Network Inferface Card name"
 }
 
 variable "nic_ip_name" {
-  type = string
+  type        = string
   description = "Network Interface Card IP name"
-  default = "internal"
+  default     = "internal"
 }
 variable "disk_name" {
-  type = string
+  type        = string
   description = "Virtual Machine Disk name"
 }
 
 variable "storage_account_type" {
-  type = string
+  type        = string
   description = "Virtual Machine Disk Storage Account type"
-  default = "Standard_LRS"
+  default     = "Standard_LRS"
 }
 variable "disk_size_gb" {
-  type = number
+  type        = number
   description = "Virtual Machine Disk size"
-  default = 30
+  default     = 30
 }
 variable "subnet_id" {
   description = "Azure subnet"
